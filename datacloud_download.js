@@ -3,6 +3,13 @@ const path = require("path");
 const fs = require("fs");
 const { execSync } = require('child_process');
 
+
+ console.log("process.argv[0]: " + process.argv[0]);
+ console.log("process.argv[1]: " + process.argv[1]);
+ console.log("process.argv[2]: " + process.argv[2]);
+ console.log("process.argv[3]: " + process.argv[3]);
+ console.log("process.argv[4]: " + process.argv[4]);
+
 // Check if dataKitName parameter was provided
 const dataKitName = process.argv[2];
 if (!dataKitName) {
