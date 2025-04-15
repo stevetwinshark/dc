@@ -10,26 +10,16 @@ if (!dataKitName) {
     process.exit(1);
 }
 
-// Helper: Get org credentials from Salesforce CLI
-function getOrgCredentials() {
-    try {
-        const orgInfo = JSON.parse(
-            execSync('sf org display --json').toString()
-        );
-        
-        if (!orgInfo.result) {
-            throw new Error('No authenticated org found. Please run "sf org login web" first.');
-        }
+const instanceUrl = process.argv[3];
+if (!instanceUrl) {
+    console.error("Please provide a instanceUrl name as parameter");
+    process.exit(1);
+}
 
-        return {
-            instanceUrl: orgInfo.result.instanceUrl,
-            accessToken: orgInfo.result.accessToken,
-            username: orgInfo.result.username
-        };
-    } catch (error) {
-        console.error('Error getting org credentials:', error.message);
-        process.exit(1);
-    }
+const accessToken = process.argv[4];
+if (!accessToken) {
+    console.error("Please provide a accessToken name as parameter");
+    process.exit(1);
 }
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -69,10 +59,7 @@ function waitForDownload(downloadPath, timeout = 30000) {
     });
 }
 
-(async () => {
-    console.log("🔑 Getting Salesforce org credentials...");
-    const orgCreds = getOrgCredentials();
-    
+(async () => {  
     console.log("🚀 Launching browser...");
 
     // Clear downloads folder first
@@ -101,13 +88,13 @@ function waitForDownload(downloadPath, timeout = 30000) {
 
         console.log("🔗 Authenticating via frontdoor...");
         // Use frontdoor.jsp for authentication
-        const frontdoorUrl = `${orgCreds.instanceUrl}/secur/frontdoor.jsp?sid=${orgCreds.accessToken}`;
+        const frontdoorUrl = `${instanceUrl}/secur/frontdoor.jsp?sid=${accessToken}`;
         await page.goto(frontdoorUrl);
         await wait(2000);
 
         // Navigate to the DataKit page after authentication
         console.log("🔄 Navigating to DataKit page...");
-        const dataKitUrl = `${orgCreds.instanceUrl}/lightning/setup/CdpPackageKits/${dataKitName}/view`;
+        const dataKitUrl = `${instanceUrl}/lightning/setup/CdpPackageKits/${dataKitName}/view`;
         await page.goto(dataKitUrl);
         
         console.log("🕒 Waiting for page to load...");
