@@ -12,13 +12,13 @@ if (!dataKitName) {
 
 const instanceUrl = process.argv[3];
 if (!instanceUrl) {
-    console.error("Please provide a instanceUrl name as parameter");
+    console.error("Please provide a instanceUrl as parameter");
     process.exit(1);
 }
 
 const accessToken = process.argv[4];
 if (!accessToken) {
-    console.error("Please provide a accessToken name as parameter");
+    console.error("Please provide a accessToken as parameter");
     process.exit(1);
 }
 
