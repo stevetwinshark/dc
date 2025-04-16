@@ -78,16 +78,18 @@ function waitForDownload(downloadPath, timeout = 30000) {
     }
 
     const browser = await puppeteer.launch({
-        headless: "new", // Changed from false to "new"
-        args: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage',
-            '--disable-gpu'
-        ],
-        userDataDir: "./userDataDir",
-        defaultViewport: { width: 1516, height: 699 }
-    });
+    headless: "new",
+    args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--single-process',
+        '--no-zygote'
+    ],
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || null,
+    userDataDir: "./userDataDir",
+    defaultViewport: { width: 1516, height: 699 }
+  });
 
     const page = await browser.newPage();
 
