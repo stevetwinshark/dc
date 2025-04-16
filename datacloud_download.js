@@ -77,19 +77,21 @@ function waitForDownload(downloadPath, timeout = 30000) {
         fs.mkdirSync(downloadPath);
     }
 
-    const browser = await puppeteer.launch({
-    headless: "new",
+   const browser = await puppeteer.launch({
+    headless: true, // Use true instead of "new"
     args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--no-first-run',
+        '--no-zygote',
         '--single-process',
-        '--no-zygote'
+        '--disable-extensions'
     ],
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || null,
-    userDataDir: "./userDataDir",
     defaultViewport: { width: 1516, height: 699 }
-  });
+});
 
     const page = await browser.newPage();
 
